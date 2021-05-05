@@ -55,6 +55,6 @@ if __name__ == '__main__':
     html = html + """
     </body></html>
     """
-    f = open('report.html', 'a+')
+    f = open('karnataka.html', 'a+')
     f.write(html)
     f.close()
