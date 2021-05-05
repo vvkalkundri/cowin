@@ -40,7 +40,7 @@ if __name__ == '__main__':
 </head><body>
 <div class="container">
 <h2>Last Updated on """ + dt_string + """</h2>
-<h2>States covered are Karnataka <h2>
+<h2>States covered are ::: Karnataka <h2>
     """
 
     for district_id in district_ids:
