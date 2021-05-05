@@ -11,7 +11,7 @@ from cowin_api import CoWinAPI
 
 if __name__ == '__main__':
     try:
-        os.remove('report.html')
+        os.remove('index.html')
     except:
         pass
     cowin = CoWinAPI()
@@ -28,13 +28,12 @@ if __name__ == '__main__':
     html = """
     <html>
     <head>
-
+  <title>Bootstrap Example</title>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
-  
   
 </head><body>
 <div class="container">
@@ -55,6 +54,6 @@ if __name__ == '__main__':
     html = html + """
     </body></html>
     """
-    f = open('karnataka.html', 'a+')
+    f = open('index.html', 'a+')
     f.write(html)
     f.close()
