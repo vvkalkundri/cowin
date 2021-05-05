@@ -1,11 +1,8 @@
-import argparse
 import json
-import os
-from datetime import date, datetime
-
 import requests
 from json2table import convert
 from cowin_api import CoWinAPI
+from datetime import date, datetime
 
 
 
@@ -37,7 +34,8 @@ if __name__ == '__main__':
   
 </head><body>
 <div class="container">
-<h2>Last Updated on """ + dt_string+ """</h2>
+<h2>Last Updated on """ + dt_string + """</h2>
+<h2>States covered are Karnataka <h2>
     """
 
     for district_id in district_ids:
@@ -50,7 +48,7 @@ if __name__ == '__main__':
 
         table_attributes = {"style": "width:100%", "align": "center", "style": "vertical-align:bottom",
                             "table border": "2", "th bgcolor": "FED8B1"}
-        html = html+convert(data, build_direction=build_direction, table_attributes=table_attributes)
+        html = html + convert(data, build_direction=build_direction, table_attributes=table_attributes)
     html = html + """
     </body></html>
     """
