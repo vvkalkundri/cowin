@@ -1,4 +1,5 @@
 import json
+import os
 import requests
 from json2table import convert
 from cowin_api import CoWinAPI
@@ -12,11 +13,15 @@ if __name__ == '__main__':
     except:
         pass
     cowin = CoWinAPI()
-    state_id = 16
+    # Code to get state ids
+    # states = cowin.get_states()
+    # print(states)
+    state_ids = [16]
     district_ids = []
-    districts = cowin.get_districts(state_id)
-    for district_id in districts['districts']:
-        district_ids.append(district_id['district_id'])
+    for state_id in state_ids:
+        districts = cowin.get_districts(state_id)
+        for district_id in districts['districts']:
+            district_ids.append(district_id['district_id'])
 
     today = date.today()
     now = datetime.now()
