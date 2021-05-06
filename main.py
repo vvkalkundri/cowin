@@ -1,11 +1,13 @@
 import json
 import os
-import requests
-from json2table import convert
-from cowin_api import CoWinAPI
+import random
+import time
 from datetime import date, datetime
+from urllib.request import urlopen, Request
 
-
+import requests
+from cowin_api import CoWinAPI
+from json2table import convert
 
 if __name__ == '__main__':
     try:
@@ -30,7 +32,7 @@ if __name__ == '__main__':
     html = """
     <html>
     <head>
-  <title>Bootstrap Example</title>
+  <title>Covin Vaccine List</title>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
@@ -41,15 +43,21 @@ if __name__ == '__main__':
 <div class="container">
 <h2>Last Updated on """ + dt_string + """</h2>
 <h2>States covered are ::: Karnataka <h2>
-<h2>Updated every few hours between ( 9AM -5PM )  <h2>
+<h2>Updated every few hours between ( 9AM -6PM )  <h2>
     """
 
     for district_id in district_ids:
-        response = requests.get(
-            "https://cdn-api.co-vin.in/api/v2/appointment/sessions/public/findByDistrict?district_id={}&date={}".format(
-                district_id, todays_date))
-        data = json.loads(response.text)
-        print(data)
+        # time.sleep(20)
+
+
+        headers = {
+            "User-Agent": "Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/41.0.2228.0 Safari/537.3"}
+        reg_url = "https://cdn-api.co-vin.in/api/v2/appointment/sessions/public/findByDistrict?district_id={}&date={}".format(district_id,todays_date)
+        req = Request(url=reg_url, headers=headers)
+        data = json.loads(urlopen(req).read())
+
+
+        # print(data)
         build_direction = "LEFT_TO_RIGHT"
 
         table_attributes = {"style": "width:100%", "align": "center", "style": "vertical-align:bottom",
@@ -58,6 +66,7 @@ if __name__ == '__main__':
     html = html + """
     </body></html>
     """
+    print(html)
     f = open('index.html', 'a+')
     f.write(html)
     f.close()
