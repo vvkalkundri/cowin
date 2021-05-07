@@ -1,11 +1,7 @@
-import json
-import os
-import random
-import time
+import json ,os ,time
 from datetime import date, datetime
 from urllib.request import urlopen, Request
 
-import requests
 from cowin_api import CoWinAPI
 from json2table import convert
 
@@ -44,29 +40,56 @@ if __name__ == '__main__':
 <h2>Last Updated on """ + dt_string + """</h2>
 <h2>States covered are ::: Karnataka <h2>
 <h2>Updated every few hours between ( 9AM -6PM )  <h2>
+ <input type="text" id="myInput" onkeyup="myFunction()" placeholder="Search by pincode.." title="Type in the pincode ">
     """
 
+
+    table_data  = ''
+    counter = 1
+    final_dict = dict()
+    final_dict['session'] = []
     for district_id in district_ids:
-        # time.sleep(20)
-
-
         headers = {
             "User-Agent": "Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/41.0.2228.0 Safari/537.3"}
-        reg_url = "https://cdn-api.co-vin.in/api/v2/appointment/sessions/public/findByDistrict?district_id={}&date={}".format(district_id,todays_date)
+        reg_url = "https://cdn-api.co-vin.in/api/v2/appointment/sessions/public/findByDistrict?district_id={}&date={}".format(
+            district_id, todays_date)
         req = Request(url=reg_url, headers=headers)
         data = json.loads(urlopen(req).read())
+        for items in data['sessions']:
+            final_dict['session'].append(items)
+            counter +=1
 
+    build_direction = "LEFT_TO_RIGHT"
 
-        # print(data)
-        build_direction = "LEFT_TO_RIGHT"
-
-        table_attributes = {"style": "width:100%", "align": "center", "style": "vertical-align:bottom",
-                            "table border": "2", "th bgcolor": "FED8B1"}
-        html = html + convert(data, build_direction=build_direction, table_attributes=table_attributes)
+    table_attributes = {"style": "width:100%", "align": "center", "style": "vertical-align:bottom",
+                        "table border": "2", "th bgcolor": "FED8B1" ,"table id":"myTable"}
+    html = html + convert(final_dict, build_direction=build_direction, table_attributes=table_attributes)
     html = html + """
+    <script>
+function myFunction() {
+  var input, filter, table, tr, td, i, txtValue;
+  input = document.getElementById("myInput");
+  filter = input.value;
+  table = document.getElementById("myTable");
+  tr = table.getElementsByTagName("tr");
+  for (i = 1; i < tr.length; i++) {
+    td = tr[i].getElementsByTagName("td")[6];
+    if (td) {
+      txtValue = td.textContent || td.innerText;
+      if (txtValue.indexOf(filter) > -1) {
+        tr[i].style.display = "";
+      } else {
+        tr[i].style.display = "none";
+      }
+    }       
+  }
+}
+</script>
+    
+    
+    
     </body></html>
     """
-    print(html)
     f = open('index.html', 'a+')
     f.write(html)
     f.close()
